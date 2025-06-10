@@ -1,10 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import { useParams } from 'next/navigation';
 
 export default function StudyPage() {
-  // Since we can't use useParams, we'll use a default name or get it from URL
-  const name = 'Study';
+  const params = useParams();
+  const rawName = params.name;
+  const name = (() => {
+    const nameStr = Array.isArray(rawName) ? rawName[0] : rawName;
+    return nameStr ? nameStr.charAt(0).toUpperCase() + nameStr.slice(1) : '';
+  })();
   const [isStudying, setIsStudying] = useState(false);
 
   return (
@@ -31,7 +36,7 @@ export default function StudyPage() {
               w-32 h-32 rounded-full border-2 transition-all duration-500 ease-in-out
               flex items-center justify-center relative overflow-hidden
               ${isStudying 
-                ? 'border-cyan-400 shadow-[0_0_40px_rgba(34,211,238,0.6)] bg-gradient-to-br from-cyan-500/20 to-blue-600/20' 
+                ? 'border-blue-400 shadow-[0_0_40px_rgba(96,165,250,0.6)] bg-gradient-to-br from-blue-500/20 to-purple-600/20' 
                 : 'border-gray-600 hover:border-gray-500 bg-gray-900/50'
               }
             `}
@@ -39,9 +44,9 @@ export default function StudyPage() {
             {/* Animated gradient ring when studying */}
             {isStudying && (
               <div className="absolute inset-0 rounded-full opacity-75">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 animate-spin" 
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-purple-500 to-blue-400 animate-spin" 
                      style={{
-                       background: 'conic-gradient(from 0deg, #00f5ff, #0080ff, #8000ff, #ff0080, #ff8000, #ffff00, #00ff80, #00f5ff)',
+                       background: 'conic-gradient(from 0deg, #60a5fa, #8b5cf6, #a855f7, #c084fc, #e879f9, #60a5fa)',
                        animation: 'spin 3s linear infinite'
                      }}>
                 </div>
@@ -54,13 +59,13 @@ export default function StudyPage() {
               relative z-10 w-28 h-28 rounded-full flex items-center justify-center
               transition-all duration-300
               ${isStudying 
-                ? 'bg-gradient-to-br from-cyan-400/30 to-blue-600/30 shadow-inner' 
+                ? 'bg-gradient-to-br from-blue-400/30 to-purple-600/30 shadow-inner' 
                 : 'bg-gray-800/80'
               }
             `}>
               {/* Pulse effect when studying */}
               {isStudying && (
-                <div className="absolute inset-0 rounded-full bg-cyan-400/20 animate-pulse"></div>
+                <div className="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse"></div>
               )}
               
 
@@ -73,18 +78,18 @@ export default function StudyPage() {
           <div className={`
             inline-flex items-center space-x-2 px-6 py-3 rounded-full
             ${isStudying 
-              ? 'bg-cyan-500/20 border border-cyan-400/30' 
+              ? 'bg-gradient-to-r from-blue-500/15 to-purple-500/15 border border-blue-400/30' 
               : 'bg-gray-800/50 border border-gray-600/30'
             }
           `}>
             <div className={`
               w-2 h-2 rounded-full
               ${isStudying 
-                ? 'bg-cyan-400 animate-pulse shadow-[0_0_6px_rgba(34,211,238,0.8)]' 
+                ? 'bg-blue-400 animate-pulse shadow-[0_0_6px_rgba(96,165,250,0.8)]' 
                 : 'bg-gray-500'
               }
             `}></div>
-            <span className="text-sm font-light tracking-wider">
+            <span className="text-sm font-light tracking-wider text-white">
               {isStudying ? 'STUDYING' : 'READY'}
             </span>
           </div>
@@ -118,7 +123,7 @@ export default function StudyPage() {
           {[...Array(8)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-60 animate-bounce"
+              className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-60 animate-bounce"
               style={{
                 left: `${15 + i * 10}%`,
                 top: `${25 + (i % 3) * 20}%`,
