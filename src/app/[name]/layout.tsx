@@ -7,7 +7,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="geist-sans geist-mono antialiased">
         <AuthProvider>
           {children}
         </AuthProvider>
