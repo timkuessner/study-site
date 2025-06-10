@@ -1,9 +1,11 @@
+'use client';
+
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 
 export default function StudyPage() {
-  const router = useRouter();
-  const { name } = router.query;
+  const params = useParams();
+  const name = params.name;
   const [isStudying, setIsStudying] = useState(false);
 
   return (
