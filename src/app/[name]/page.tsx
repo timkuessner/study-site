@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useAuth } from '../../lib/authContext';
-import Image from 'next/image';
 
 export default function StudyPage() {
   const params = useParams();
@@ -79,11 +78,9 @@ export default function StudyPage() {
               disabled={authLoading}
               className="w-full flex items-center justify-center space-x-3 px-6 py-3 bg-white hover:bg-gray-100 text-black rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Image 
+              <img 
                 src="/icons/google-logo.svg" 
                 alt="Google"
-                width={20}
-                height={20}
                 className="w-5 h-5"
               />
               <span>{authLoading ? 'Signing in...' : 'Continue with Google'}</span>
@@ -94,11 +91,9 @@ export default function StudyPage() {
               disabled={authLoading}
               className="w-full flex items-center justify-center space-x-3 px-6 py-3 bg-black hover:bg-gray-900 text-white border border-gray-600 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Image 
+              <img 
                 src="/icons/apple-logo.svg" 
                 alt="Apple"
-                width={20}
-                height={20}
                 className="w-5 h-5"
               />
               <span>{authLoading ? 'Signing in...' : 'Continue with Apple'}</span>
@@ -118,13 +113,10 @@ export default function StudyPage() {
       <div className="absolute top-6 right-6 z-20 flex items-center space-x-4">
         <div className="flex items-center space-x-2">
           {user.photoURL && (
-            <Image
-              src={user.photoURL}
-              alt="Profile"
-              width={32}
-              height={32}
+            <img 
+              src={user.photoURL} 
+              alt="Profile" 
               className="w-8 h-8 rounded-full"
-              unoptimized={true}
             />
           )}
           <span className="text-sm text-gray-300">
