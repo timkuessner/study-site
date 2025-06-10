@@ -2,20 +2,134 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useAuth } from '../../lib/authContext';
 
 export default function StudyPage() {
   const params = useParams();
+  const { user, loading, signInWithGoogle, signInWithApple, signOut } = useAuth();
   const rawName = params.name;
   const name = (() => {
     const nameStr = Array.isArray(rawName) ? rawName[0] : rawName;
     return nameStr ? nameStr.charAt(0).toUpperCase() + nameStr.slice(1) : '';
   })();
   const [isStudying, setIsStudying] = useState(false);
+  const [authLoading, setAuthLoading] = useState(false);
+
+  const handleGoogleSignIn = async () => {
+    setAuthLoading(true);
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error('Failed to sign in with Google:', error);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleAppleSignIn = async () => {
+    setAuthLoading(true);
+    try {
+      await signInWithApple();
+    } catch (error) {
+      console.error('Failed to sign in with Apple:', error);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Failed to sign out:', error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="animate-pulse text-xl">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+        {/* Background gradient effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900 opacity-50"></div>
+        
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center space-y-8 w-full max-w-sm">
+          
+          {/* Title */}
+          <div className="text-center">
+            <h1 className="text-4xl font-light tracking-wide mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              {name}
+            </h1>
+            <div className="h-px w-32 bg-gradient-to-r from-transparent via-blue-400 to-transparent mx-auto"></div>
+            <p className="text-gray-400 mt-4 text-sm">Sign in to start studying</p>
+          </div>
+
+          {/* Auth Buttons */}
+          <div className="space-y-4 w-full">
+            <button
+              onClick={handleGoogleSignIn}
+              disabled={authLoading}
+              className="w-full flex items-center justify-center space-x-3 px-6 py-3 bg-white hover:bg-gray-100 text-black rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <img 
+                src="/icons/google-logo.svg" 
+                alt="Google"
+                className="w-5 h-5"
+              />
+              <span>{authLoading ? 'Signing in...' : 'Continue with Google'}</span>
+            </button>
+
+            <button
+              onClick={handleAppleSignIn}
+              disabled={authLoading}
+              className="w-full flex items-center justify-center space-x-3 px-6 py-3 bg-black hover:bg-gray-900 text-white border border-gray-600 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <img 
+                src="/icons/apple-logo.svg" 
+                alt="Apple"
+                className="w-5 h-5"
+              />
+              <span>{authLoading ? 'Signing in...' : 'Continue with Apple'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* Background gradient effect */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900 opacity-50"></div>
+      
+      {/* User info and sign out */}
+      <div className="absolute top-6 right-6 z-20 flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
+          {user.photoURL && (
+            <img 
+              src={user.photoURL} 
+              alt="Profile" 
+              className="w-8 h-8 rounded-full"
+            />
+          )}
+          <span className="text-sm text-gray-300">
+            {user.displayName || user.email}
+          </span>
+        </div>
+        <button
+          onClick={handleSignOut}
+          className="text-xs px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded-full transition-colors"
+        >
+          Sign Out
+        </button>
+      </div>
       
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center space-y-12 w-full max-w-sm">
@@ -67,8 +181,6 @@ export default function StudyPage() {
               {isStudying && (
                 <div className="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse"></div>
               )}
-              
-
             </div>
           </button>
         </div>
@@ -130,7 +242,7 @@ export default function StudyPage() {
                 animationDelay: `${i * 0.4}s`,
                 animationDuration: `${2 + i * 0.2}s`
               }}
-            ></div>
+            />
           ))}
         </div>
       )}
