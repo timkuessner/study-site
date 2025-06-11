@@ -4,7 +4,10 @@ import { AuthProvider } from '@/lib/authContext';
 
 export const metadata: Metadata = {
   title: "Study",
-  description: "Your personal study companion",
+  description: "Study more!",
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({
