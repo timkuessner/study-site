@@ -4,6 +4,7 @@ import { db } from '@/lib/firebase';
 import { getFirstName } from '@/utils/userHelpers';
 
 export interface UserData {
+  uid?: string;
   name: string;
   isStudying: boolean;
   lastUpdated: number;
@@ -35,9 +36,10 @@ export class FirebaseService {
   static async updateStudyingState(user: User, isStudying: boolean): Promise<void> {
     const userRef = ref(db, `users/${user.uid}`);
     
-    await update(userRef, {
-      isStudying,
-      lastUpdated: Date.now()
+    await update(ref(db), {
+      [`users/${user.uid}/isStudying`]: isStudying,
+      [`users/${user.uid}/lastUpdated`]: Date.now(),
+      [`activeUsers/${user.uid}`]: isStudying ? true : null
     });
   }
 
@@ -62,6 +64,55 @@ export class FirebaseService {
       },
       (error) => {
         console.error('Error listening to user data:', error);
+        onError(error);
+      }
+    );
+  }
+
+  static subscribeToActiveUsers(
+    onData: (users: (UserData & { uid: string })[]) => void,
+    onError: (error: Error) => void
+  ): Unsubscribe {
+    const activeUsersRef = ref(db, 'activeUsers');
+    
+    return onValue(
+      activeUsersRef,
+      async (snapshot: DataSnapshot) => {
+        const activeUserIds = snapshot.val();
+        
+        if (!activeUserIds) {
+          onData([]);
+          return;
+        }
+  
+        // Get user data for all active users
+        const userDataPromises = Object.keys(activeUserIds).map(async (uid) => {
+          const userRef = ref(db, `users/${uid}`);
+          return new Promise<(UserData & { uid: string }) | null>((resolve) => {
+            onValue(userRef, (userSnapshot) => {
+              const userData = userSnapshot.val() as UserData | null;
+              if (userData && userData.isStudying) {
+                resolve({ ...userData, uid });
+              } else {
+                resolve(null);
+              }
+            }, { onlyOnce: true });
+          });
+        });
+  
+        try {
+          const userData = await Promise.all(userDataPromises);
+          const validUsers = userData.filter((user): user is (UserData & { uid: string }) => 
+            user !== null
+          );
+          onData(validUsers);
+        } catch (error) {
+          console.error('Error fetching active users:', error);
+          onError(error as Error);
+        }
+      },
+      (error) => {
+        console.error('Error listening to active users:', error);
         onError(error);
       }
     );
