@@ -54,10 +54,7 @@ export default function Home() {
         <StudyStatus isStudying={isStudying} />
 
         {/* Active Users Counter */}
-        <ActiveUsers 
-          currentUserUid={user.uid} 
-          isCurrentUserStudying={isStudying}
-        />
+        <ActiveUsers currentUserUid={user.uid} />
       </div>
 
       {/* Background Effects */}

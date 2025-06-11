@@ -3,10 +3,9 @@ import { FirebaseService, UserData } from '@/services/firebaseService';
 
 interface ActiveUsersProps {
   currentUserUid?: string;
-  isCurrentUserStudying: boolean;
 }
 
-export function ActiveUsers({ currentUserUid, isCurrentUserStudying }: ActiveUsersProps) {
+export function ActiveUsers({ currentUserUid }: ActiveUsersProps) {
   const [activeUsers, setActiveUsers] = useState<UserData[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
