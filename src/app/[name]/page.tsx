@@ -7,7 +7,7 @@ import { useAuth } from '../../lib/authContext';
 
 export default function StudyPage() {
   const params = useParams();
-  const { user, loading, signInWithGoogle, signInWithApple, signOut } = useAuth();
+  const { user, loading, signInWithGoogle, signOut } = useAuth();
   const rawName = params.name;
   const name = (() => {
     const nameStr = Array.isArray(rawName) ? rawName[0] : rawName;
@@ -22,17 +22,6 @@ export default function StudyPage() {
       await signInWithGoogle();
     } catch (error) {
       console.error('Failed to sign in with Google:', error);
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const handleAppleSignIn = async () => {
-    setAuthLoading(true);
-    try {
-      await signInWithApple();
-    } catch (error) {
-      console.error('Failed to sign in with Apple:', error);
     } finally {
       setAuthLoading(false);
     }
@@ -86,20 +75,6 @@ export default function StudyPage() {
                 height={20}
               />
               <span>{authLoading ? 'Signing in...' : 'Continue with Google'}</span>
-            </button>
-
-            <button
-              onClick={handleAppleSignIn}
-              disabled={authLoading}
-              className="w-full flex items-center justify-center space-x-3 px-6 py-3 bg-black hover:bg-gray-900 text-white border border-gray-600 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <Image 
-                src="/icons/apple-logo.svg" 
-                alt="Apple"
-                width={20}
-                height={20}
-              />
-              <span>{authLoading ? 'Signing in...' : 'Continue with Apple'}</span>
             </button>
           </div>
         </div>

@@ -7,13 +7,12 @@ import {
   signInWithPopup, 
   signOut as firebaseSignOut 
 } from 'firebase/auth';
-import { auth, googleProvider, appleProvider } from './firebase';
+import { auth, googleProvider } from './firebase';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
-  signInWithApple: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -41,15 +40,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signInWithApple = async () => {
-    try {
-      await signInWithPopup(auth, appleProvider);
-    } catch (error) {
-      console.error('Error signing in with Apple:', error);
-      throw error;
-    }
-  };
-
   const signOut = async () => {
     try {
       await firebaseSignOut(auth);
@@ -63,7 +53,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     user,
     loading,
     signInWithGoogle,
-    signInWithApple,
     signOut,
   };
 
