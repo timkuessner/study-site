@@ -2,11 +2,13 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyC17zxzUTKZKgMzbPI316H3wioVtHRup3I",
   authDomain: "study-site-ccbe3.firebaseapp.com",
+  databaseURL: "https://study-site-ccbe3-default-rtdb.asia-southeast1.firebasedatabase.app/",
   projectId: "study-site-ccbe3",
   storageBucket: "study-site-ccbe3.firebasestorage.app",
   messagingSenderId: "944883504439",
@@ -26,5 +28,6 @@ const auth = getAuth(app);
 
 // Initialize auth providers
 const googleProvider = new GoogleAuthProvider();
+const db = getDatabase(app);
 
-export { app, analytics, auth, googleProvider };
+export { app, analytics, auth, googleProvider, db };
