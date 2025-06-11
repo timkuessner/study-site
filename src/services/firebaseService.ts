@@ -34,8 +34,6 @@ export class FirebaseService {
    * Update studying state in Firebase
    */
   static async updateStudyingState(user: User, isStudying: boolean): Promise<void> {
-    const userRef = ref(db, `users/${user.uid}`);
-    
     await update(ref(db), {
       [`users/${user.uid}/isStudying`]: isStudying,
       [`users/${user.uid}/lastUpdated`]: Date.now(),
