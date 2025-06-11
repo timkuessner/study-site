@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth';
-import { onValue, ref, set, update, DataSnapshot, Unsubscribe } from 'firebase/database';
+import { onValue, ref, set, update, get, DataSnapshot, Unsubscribe } from 'firebase/database';
 import { db } from '@/lib/firebase';
 import { getFirstName } from '@/utils/userHelpers';
 
@@ -28,6 +28,23 @@ export class FirebaseService {
 
     await set(userRef, userData);
     console.log('User data initialized successfully');
+  }
+
+  /**
+   * Get current user data from Firebase (one-time read)
+   */
+  static async getCurrentUserData(user: User): Promise<UserData | null> {
+    const userRef = ref(db, `users/${user.uid}`);
+    
+    try {
+      const snapshot = await get(userRef);
+      const data = snapshot.val() as UserData | null;
+      console.log('Current user data fetched:', data);
+      return data;
+    } catch (error) {
+      console.error('Error getting current user data:', error);
+      throw error;
+    }
   }
 
   /**
