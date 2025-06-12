@@ -30,7 +30,7 @@ export function UserSettings({ user, onSignOut }: UserSettingsProps) {
 
   useEffect(() => {
     loadUserData();
-  }, [loadUserData]); // Added dependency
+  }); // Removed loadUserData dependency since it causes a reference error
 
   const loadUserData = async () => {
     try {
