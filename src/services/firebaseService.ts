@@ -473,6 +473,7 @@ export class FirebaseService {
 
         try {
           // Remove unused activeUsers declaration
+          // Before: const activeUsers: UserData[] = [];
           const activeUids = Object.keys(activeUsersData);
 
           // Get user stats (including tags) for all active users
