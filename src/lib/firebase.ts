@@ -25,8 +25,6 @@ if (typeof window !== 'undefined') {
 }
 
 const auth = getAuth(app);
-
-// Initialize auth providers
 const googleProvider = new GoogleAuthProvider();
 const db = getDatabase(app);
 
