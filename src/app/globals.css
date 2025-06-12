@@ -621,7 +621,6 @@ li {
   z-index: 20;
 }
 
-/* Overflow utilities */
 .overflow-hidden {
   overflow: hidden;
 }
