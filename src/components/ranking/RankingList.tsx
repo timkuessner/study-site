@@ -56,7 +56,7 @@ export function RankingList({ currentUserUid }: RankingListProps) {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="flex flex-col items-center space-y-3">
-          <div className="w-8 h-8 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-2 border-purple-400 border-t-transparent rounded-full animate-spin"></div>
           <span className="text-sm text-gray-400">Loading rankings...</span>
         </div>
       </div>
@@ -67,7 +67,7 @@ export function RankingList({ currentUserUid }: RankingListProps) {
     <div className="w-full max-w-md">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-light text-white mb-2">Study Rankings</h2>
-        <div className="h-px w-24 bg-gradient-to-r from-transparent via-yellow-400 to-transparent mx-auto"></div>
+        <div className="h-px w-24 bg-gradient-to-r from-transparent via-blue-400 to-transparent mx-auto"></div>
       </div>
 
       {/* Time Filter */}
@@ -80,7 +80,7 @@ export function RankingList({ currentUserUid }: RankingListProps) {
               className={`
                 px-3 py-1 rounded-md text-xs font-medium transition-all duration-200
                 ${timeFilter === filter.key
-                  ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-400/30'
+                  ? 'bg-blue-500/20 text-blue-400 border border-blue-400/30'
                   : 'text-gray-400 hover:text-gray-300'}
               `}
             >
@@ -133,7 +133,7 @@ export function RankingList({ currentUserUid }: RankingListProps) {
                   <div className="flex-1">
                     <div className="flex items-center space-x-2">
                       <p className={`font-medium ${isCurrentUser ? 'text-blue-400' : 'text-white'}`}>
-                        {ranking.name}
+                        {ranking.tag}
                       </p>
                       {isCurrentUser && (
                         <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full">
@@ -146,7 +146,7 @@ export function RankingList({ currentUserUid }: RankingListProps) {
                         {formatTime(ranking.totalMinutes)}
                       </p>
                       <p className="text-gray-500 text-xs">
-                        {ranking.sessionsCount} sessions
+                        {ranking.sessionsCount || ranking.daysActive || 0} sessions
                       </p>
                     </div>
                   </div>

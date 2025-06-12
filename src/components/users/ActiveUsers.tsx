@@ -32,7 +32,7 @@ export function ActiveUsers({ currentUserUid, showAsList = false }: ActiveUsersP
     return (
       <div className="flex items-center justify-center p-8">
         <div className="flex flex-col items-center space-y-3">
-          <div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-2 border-purple-400 border-t-transparent rounded-full animate-spin"></div>
           <span className="text-sm text-gray-400">Loading users...</span>
         </div>
       </div>
@@ -45,7 +45,7 @@ export function ActiveUsers({ currentUserUid, showAsList = false }: ActiveUsersP
       <div className="w-full max-w-md">
         <div className="text-center mb-6">
           <h2 className="text-2xl font-light text-white mb-2">Currently Online</h2>
-          <div className="h-px w-24 bg-gradient-to-r from-transparent via-green-400 to-transparent mx-auto"></div>
+          <div className="h-px w-24 bg-gradient-to-r from-transparent via-blue-400 to-transparent mx-auto"></div>
         </div>
         
         {totalStudying === 0 ? (
@@ -63,9 +63,9 @@ export function ActiveUsers({ currentUserUid, showAsList = false }: ActiveUsersP
                 key={index} 
                 className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-lg p-4 flex items-center space-x-3"
               >
-                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse flex-shrink-0"></div>
+                <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse flex-shrink-0"></div>
                 <div className="flex-1">
-                  <p className="text-white font-medium">{user.name}</p>
+                  <p className="text-white font-medium">{user.tag}</p>
                   <p className="text-gray-400 text-xs">Currently studying</p>
                 </div>
                 {user.uid === currentUserUid && (
@@ -79,8 +79,8 @@ export function ActiveUsers({ currentUserUid, showAsList = false }: ActiveUsersP
         )}
         
         <div className="mt-6 text-center">
-          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-green-500/10 border border-green-400/20 rounded-full">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-500/10 border border-blue-400/20 rounded-full">
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
             <span className="text-sm text-gray-300">
               {totalStudying === 0 
                 ? 'No active users' 
@@ -106,7 +106,7 @@ export function ActiveUsers({ currentUserUid, showAsList = false }: ActiveUsersP
             {activeUsers.map((user, index) => (
               <div key={index} className="flex items-center justify-center space-x-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-gray-200">{user.name}</span>
+                <span className="text-sm text-gray-200">{user.tag}</span>
               </div>
             ))}
           </div>

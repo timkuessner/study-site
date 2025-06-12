@@ -8,6 +8,7 @@ import {
   signOut as firebaseSignOut 
 } from 'firebase/auth';
 import { auth, googleProvider } from './firebase';
+import { FirebaseService } from '@/services/firebaseService';
 
 interface AuthContextType {
   user: User | null;
@@ -23,8 +24,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
+      
+      if (user) {
+        try {
+          console.log('User signed in, initializing data...', user.uid);
+          await FirebaseService.initializeUserData(user);
+          console.log('User data initialized successfully');
+        } catch (error) {
+          console.error('Error initializing user data:', error);
+        }
+      }
+      
       setLoading(false);
     });
 
@@ -33,7 +45,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      // FirebaseService.initializeUserData will be called in onAuthStateChanged
     } catch (error) {
       console.error('Error signing in with Google:', error);
       throw error;

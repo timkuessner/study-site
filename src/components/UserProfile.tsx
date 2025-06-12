@@ -27,13 +27,13 @@ export function UserProfile({ user, onSignOut }: UserProfileProps) {
             className="rounded-full"
           />
         )}
-        <span className="text-sm text-gray-300">
+        <span className="text-sm font-light bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
           {user.displayName || user.email}
         </span>
       </div>
       <button
         onClick={handleSignOut}
-        className="text-xs px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded-full transition-colors"
+        className="text-xs px-3 py-1 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-400/30 rounded-full transition-all duration-200 hover:shadow-[0_0_10px_rgba(96,165,250,0.3)]"
       >
         Sign Out
       </button>
