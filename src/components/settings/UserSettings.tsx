@@ -103,6 +103,8 @@ export function UserSettings({ user, onSignOut }: UserSettingsProps) {
       } else {
         setNameError(result.error || 'Failed to update name');
       }
+    } catch (error) {
+      setNameError('Failed to update name');
     } finally {
       setSaving(false);
     }
@@ -131,6 +133,8 @@ export function UserSettings({ user, onSignOut }: UserSettingsProps) {
       } else {
         setTagError(result.error || 'Failed to update tag');
       }
+    } catch (error) {
+      setTagError('Failed to update tag');
     } finally {
       setSaving(false);
     }
