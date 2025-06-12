@@ -26,12 +26,6 @@ export function ActiveUsers({ currentUserUid, showAsList = false }: ActiveUsersP
     return unsubscribe;
   }, []);
 
-  // Create display list with current user if studying
-  const displayUsers = activeUsers.map(user => ({
-    ...user,
-    displayName: user.uid === currentUserUid ? 'You' : user.name
-  }));
-
   const totalStudying = activeUsers.length;
 
   if (loading) {
@@ -64,14 +58,14 @@ export function ActiveUsers({ currentUserUid, showAsList = false }: ActiveUsersP
           </div>
         ) : (
           <div className="space-y-3">
-            {displayUsers.map((user, index) => (
+            {activeUsers.map((user, index) => (
               <div 
                 key={index} 
                 className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-lg p-4 flex items-center space-x-3"
               >
                 <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse flex-shrink-0"></div>
                 <div className="flex-1">
-                  <p className="text-white font-medium">{user.displayName}</p>
+                  <p className="text-white font-medium">{user.name}</p>
                   <p className="text-gray-400 text-xs">Currently studying</p>
                 </div>
                 {user.uid === currentUserUid && (
@@ -105,14 +99,14 @@ export function ActiveUsers({ currentUserUid, showAsList = false }: ActiveUsersP
   return (
     <div className="mt-8 flex flex-col items-center">
       {/* Expandable user list */}
-      {isExpanded && displayUsers.length > 0 && (
+      {isExpanded && activeUsers.length > 0 && (
         <div className="mb-4 bg-gray-900/90 backdrop-blur-sm border border-gray-700 rounded-lg p-4 min-w-48 max-w-64">
           <h3 className="text-sm font-medium text-gray-300 mb-3 text-center">Currently studying:</h3>
           <div className="space-y-2">
-            {displayUsers.map((user, index) => (
+            {activeUsers.map((user, index) => (
               <div key={index} className="flex items-center justify-center space-x-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-gray-200">{user.displayName}</span>
+                <span className="text-sm text-gray-200">{user.name}</span>
               </div>
             ))}
           </div>

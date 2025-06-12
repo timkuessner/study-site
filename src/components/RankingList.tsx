@@ -133,7 +133,7 @@ export function RankingList({ currentUserUid }: RankingListProps) {
                   <div className="flex-1">
                     <div className="flex items-center space-x-2">
                       <p className={`font-medium ${isCurrentUser ? 'text-blue-400' : 'text-white'}`}>
-                        {isCurrentUser ? 'You' : ranking.name}
+                        {ranking.name}
                       </p>
                       {isCurrentUser && (
                         <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full">
