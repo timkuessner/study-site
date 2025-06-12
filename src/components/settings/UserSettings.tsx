@@ -11,7 +11,12 @@ interface UserSettingsProps {
 }
 
 export function UserSettings({ user, onSignOut }: UserSettingsProps) {
-  const [userData, setUserData] = useState<any>(null);
+  interface UserData {
+    name?: string;
+    tag?: string;
+  }
+  
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -25,7 +30,7 @@ export function UserSettings({ user, onSignOut }: UserSettingsProps) {
 
   useEffect(() => {
     loadUserData();
-  }, [user]);
+  }, [user]); // Removed loadUserData dependency since it's defined in component scope
 
   const loadUserData = async () => {
     try {
@@ -44,6 +49,7 @@ export function UserSettings({ user, onSignOut }: UserSettingsProps) {
       }
     } catch (error) {
       console.error('Error loading user data:', error);
+      setNameError(error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
@@ -149,6 +155,7 @@ export function UserSettings({ user, onSignOut }: UserSettingsProps) {
       await onSignOut();
     } catch (error) {
       console.error('Failed to sign out:', error);
+      setTagError(error instanceof Error ? error.message : 'Unknown error');
     }
   };
 

@@ -412,7 +412,7 @@ export class FirebaseService {
     const userStatsRef = ref(db, `userData/${user.uid}/stats`);
     const activeUsersRef = ref(db, `activeUsers/${user.uid}`);
     
-    let statsValue: any = null;
+    let statsValue: UserStats | null = null; // Fixed type annotation
     let isStudying = false;
     let updateCount = 0;
     
@@ -519,9 +519,8 @@ export class FirebaseService {
       if (!allUserData) return [];
 
       const rankings: UserRanking[] = [];
-      const now = new Date();
       
-      for (const [uid, userData] of Object.entries(allUserData) as [string, any][]) {
+      for (const [uid, userData] of Object.entries(allUserData) as [string, UserData][]) {
         let totalMinutes = 0;
         let lastStudySession = 0;
         let daysActive = 0;
@@ -531,21 +530,21 @@ export class FirebaseService {
 
         if (timeFilter === 'allTime') {
           // Use total stats
-          if (userData.stats) {
-            totalMinutes = userData.stats.totalMinutes || 0;
-            lastStudySession = userData.stats.lastStudySession || 0;
-            sessionsCount = userData.stats.sessionsCount || 0;
-            tag = userData.stats.tag || `user.${uid.slice(0, 8)}`;
-            name = userData.stats.name || `User-${uid.slice(0, 8)}`;
+          if ('stats' in userData && userData.stats) {
+            totalMinutes = (userData.stats as UserStats)?.totalMinutes || 0;
+            lastStudySession = (userData.stats as UserStats)?.lastStudySession || 0;
+            sessionsCount = (userData.stats as UserStats)?.sessionsCount || 0;
+            tag = (userData.stats as UserStats)?.tag || `user.${uid.slice(0, 8)}`;
+            name = (userData.stats as UserStats)?.name || `User-${uid.slice(0, 8)}`;
           }
           
           // Count active days from statsByDate
-          if (userData.statsByDate) {
+          if ('statsByDate' in userData && userData.statsByDate) {
             daysActive = Object.keys(userData.statsByDate).length;
           }
         } else {
           // Calculate from daily stats
-          if (userData.statsByDate) {
+          if ('statsByDate' in userData && userData.statsByDate) {
             const cutoffDate = new Date();
             if (timeFilter === 'week') {
               cutoffDate.setDate(cutoffDate.getDate() - 7);
@@ -568,9 +567,9 @@ export class FirebaseService {
           }
           
           // Get tag from stats
-          if (userData.stats) {
-            tag = userData.stats.tag || `user.${uid.slice(0, 8)}`;
-            name = userData.stats.name || `User-${uid.slice(0, 8)}`;
+          if ('stats' in userData && userData.stats) {
+            tag = (userData.stats as UserStats)?.tag || `user.${uid.slice(0, 8)}`;
+            name = (userData.stats as UserStats)?.name || `User-${uid.slice(0, 8)}`;
           }
         }
 
