@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth';
-import { onValue, ref, set, update, get, DataSnapshot, Unsubscribe, push, query, orderByChild, limitToLast } from 'firebase/database';
+import { onValue, ref, set, update, get, DataSnapshot, Unsubscribe, push } from 'firebase/database';
 import { db } from '@/lib/firebase';
 import { getFirstName } from '@/utils/userHelpers';
 
